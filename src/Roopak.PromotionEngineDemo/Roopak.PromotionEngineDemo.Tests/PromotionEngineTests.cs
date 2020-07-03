@@ -69,5 +69,13 @@ namespace Roopak.PromotionEngineDemo.Tests
             var total = _sut.ComputeTotalInvoiceAmount(order, promotions);
             Assert.Equal(expectedTotal, total);
         }
+
+        [Theory]
+        [ClassData(typeof(OrderWithOrderItems_PromotionsExist_MultiplePromotionTypesApplyMultipleTimes_TestData))]
+        public void OrderWithOrderItems_PromotionsExist_MultiplePromotionTypesApplyMultipleTimes(decimal expectedTotal, Order order, List<Promotion> promotions)
+        {
+            var total = _sut.ComputeTotalInvoiceAmount(order, promotions);
+            Assert.Equal(expectedTotal, total);
+        }
     }
 }
