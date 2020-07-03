@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roopak.PromotionEngineDemo.Tests", "Roopak.PromotionEngineDemo.Tests\Roopak.PromotionEngineDemo.Tests.csproj", "{055F80BB-5156-4810-8B14-9CBC1F47371C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roopak.PromotionEngineDemo", "Roopak.PromotionEngineDemo\Roopak.PromotionEngineDemo.csproj", "{AF318CAB-1464-4B5A-8F19-5DB132C21E15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{055F80BB-5156-4810-8B14-9CBC1F47371C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{055F80BB-5156-4810-8B14-9CBC1F47371C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{055F80BB-5156-4810-8B14-9CBC1F47371C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF318CAB-1464-4B5A-8F19-5DB132C21E15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF318CAB-1464-4B5A-8F19-5DB132C21E15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF318CAB-1464-4B5A-8F19-5DB132C21E15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF318CAB-1464-4B5A-8F19-5DB132C21E15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
