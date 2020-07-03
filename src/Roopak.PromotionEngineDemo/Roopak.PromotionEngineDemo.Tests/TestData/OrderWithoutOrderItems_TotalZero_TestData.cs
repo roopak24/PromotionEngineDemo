@@ -8,8 +8,8 @@ namespace Roopak.PromotionEngineDemo.Tests.TestData
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { 0, null };
-            yield return new object[] { 0, new Order { Items = new List<OrderItem>() } };
+            yield return new object[] { 0, null, new List<Promotion>() };
+            yield return new object[] { 0, new Order { Items = new List<OrderItem>() }, new List<Promotion>() };
         }
 
         IEnumerator IEnumerable.GetEnumerator()
