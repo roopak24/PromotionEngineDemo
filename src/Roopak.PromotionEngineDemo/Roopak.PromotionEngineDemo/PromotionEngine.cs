@@ -21,13 +21,16 @@ namespace Roopak.PromotionEngineDemo
                     {
                         order.Items.ForEach(oi =>
                         {
-                            if (p.SkuIds.Contains(oi.SkuId) && oi.Quantity >= p.QualifyingQuantity)
+                            if (p.SkuIds.Contains(oi.SkuId) && !oi.IsPromotionApplied)
                             {
-                                if (!oi.IsPromotionApplied)
+                                var remainingQuantity = oi.Quantity;
+                                while (remainingQuantity >= p.QualifyingQuantity)
                                 {
                                     total += p.Price;
-                                    oi.IsPromotionApplied = true;
+                                    remainingQuantity -= p.QualifyingQuantity;
                                 }
+                                total += remainingQuantity * oi.UnitPrice;
+                                oi.IsPromotionApplied = true;
                             }
                         });
                     }
