@@ -10,7 +10,7 @@ namespace Roopak.PromotionEngineDemo
     {
         public decimal ComputeTotalInvoiceAmount(Order order, List<Promotion> promotions)
         {
-            var total = 0m;
+            decimal total = 0m;
 
             if (order?.Items?.Count > 0)
             {
@@ -18,38 +18,52 @@ namespace Roopak.PromotionEngineDemo
                 {
                     if (p.Type == PromotionType.QuantityBased)
                     {
-                        order.Items.ForEach(oi =>
-                        {
-                            if (p.SkuIds.Contains(oi.SkuId) && !oi.IsPromotionApplied)
-                            {
-                                var remainingQuantity = oi.Quantity;
-                                while (remainingQuantity >= p.QualifyingQuantity)
-                                {
-                                    total += p.Price;
-                                    remainingQuantity -= p.QualifyingQuantity;
-                                }
-                                total += remainingQuantity * oi.UnitPrice;
-                                oi.IsPromotionApplied = true;
-                            }
-                        });
+                        total += ComputeTotalInvoiceAmountForQuantityBasedPromotion(order, p);
                     }
                     else if (p.Type == PromotionType.CombinationBased)
                     {
-                        if (IsExistsAllPromotionSkusInOrder(p.SkuIds, order.Items.Where(x => !x.IsPromotionApplied).ToList()))
-                        {
-                            var applicableOrderItems = order.Items.Where(x => p.SkuIds.Contains(x.SkuId)).ToList();
-                            var promotionApplicableTimes = applicableOrderItems.Min(aoi => aoi.Quantity);
-                            applicableOrderItems.ForEach(aoi => aoi.Quantity -= promotionApplicableTimes);
-                            total += promotionApplicableTimes * p.Price;
-                        }                     
+                        total += ComputeTotalInvoiceAmountForCombinationBasedPromotion(order, p);
                     }
 
                 });
 
-                var remainingOrderItems = order.Items.Where(x => !x.IsPromotionApplied).ToList();
+                List<OrderItem> remainingOrderItems = order.Items.Where(x => !x.IsPromotionApplied).ToList();
                 remainingOrderItems.ForEach(x => total += x.Quantity * x.UnitPrice);
-            }            
+            }
 
+            return total;
+        }
+
+        private static decimal ComputeTotalInvoiceAmountForQuantityBasedPromotion(Order order, Promotion promotion)
+        {
+            decimal total = 0m;
+            order.Items.ForEach(oi =>
+            {
+                if (promotion.SkuIds.Contains(oi.SkuId) && !oi.IsPromotionApplied)
+                {
+                    int remainingQuantity = oi.Quantity;
+                    while (remainingQuantity >= promotion.QualifyingQuantity)
+                    {
+                        total += promotion.Price;
+                        remainingQuantity -= promotion.QualifyingQuantity;
+                    }
+                    total += remainingQuantity * oi.UnitPrice;
+                    oi.IsPromotionApplied = true;
+                }
+            });
+            return total;
+        }
+
+        private decimal ComputeTotalInvoiceAmountForCombinationBasedPromotion(Order order, Promotion promotion)
+        {
+            decimal total = 0m;
+            if (IsExistsAllPromotionSkusInOrder(promotion.SkuIds, order.Items.Where(x => !x.IsPromotionApplied).ToList()))
+            {
+                List<OrderItem> applicableOrderItems = order.Items.Where(x => promotion.SkuIds.Contains(x.SkuId)).ToList();
+                int promotionApplicableTimes = applicableOrderItems.Min(aoi => aoi.Quantity);
+                applicableOrderItems.ForEach(aoi => aoi.Quantity -= promotionApplicableTimes);
+                total += promotionApplicableTimes * promotion.Price;
+            }
             return total;
         }
 

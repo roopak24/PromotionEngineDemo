@@ -26,22 +26,22 @@ namespace Roopak.PromotionEngineDemo.Tests.TestData
                 null
             };
 
-            yield return new object[] 
+            yield return new object[]
             {
-                90, 
-                new Order 
-                { 
-                    Items = new List<OrderItem> 
-                    { 
-                        new OrderItem 
-                        { 
+                90,
+                new Order
+                {
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
                             SkuId = "A",
                             Quantity = 3,
                             UnitPrice = 30
                         }
-                    } 
+                    }
                 },
-                new List<Promotion>() 
+                new List<Promotion>()
             };
         }
 
