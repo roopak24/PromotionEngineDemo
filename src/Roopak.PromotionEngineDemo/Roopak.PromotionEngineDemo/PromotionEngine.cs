@@ -1,9 +1,8 @@
 ﻿using Roopak.PromotionEngineDemo.Enums;
 using Roopak.PromotionEngineDemo.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Roopak.PromotionEngineDemo
 {
@@ -34,6 +33,17 @@ namespace Roopak.PromotionEngineDemo
                             }
                         });
                     }
+                    else if (p.Type == PromotionType.CombinationBased)
+                    {
+                        if (IsExistsAllPromotionSkusInOrder(p.SkuIds, order.Items.Where(x => !x.IsPromotionApplied).ToList()))
+                        {
+                            var applicableOrderItems = order.Items.Where(x => p.SkuIds.Contains(x.SkuId)).ToList();
+                            var promotionApplicableTimes = applicableOrderItems.Min(aoi => aoi.Quantity);
+                            applicableOrderItems.ForEach(aoi => aoi.Quantity -= promotionApplicableTimes);
+                            total += promotionApplicableTimes * p.Price;
+                        }                     
+                    }
+
                 });
 
                 var remainingOrderItems = order.Items.Where(x => !x.IsPromotionApplied).ToList();
@@ -41,6 +51,11 @@ namespace Roopak.PromotionEngineDemo
             }            
 
             return total;
+        }
+
+        private bool IsExistsAllPromotionSkusInOrder(List<string> promotionSkuIds, List<OrderItem> orderItems)
+        {
+            return promotionSkuIds.All(pSkuId => orderItems.Select(oi => oi.SkuId).Contains(pSkuId));
         }
     }
 }
